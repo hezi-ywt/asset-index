@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0] - 2026-04-14
+
+### 新增
+
+- **基于 `type` 的资产识别规则**：`rules.yaml` 中配置的 `types` 现在同时决定哪些 frontmatter 文件会被视为资产。配置了 `types` 时，只有 `type` 命中规则的文件才会进入 `scan/list/search/stats` 和批量 `check`；未配置 `types` 时保持兼容行为。
+- `scan` 输出更精确：区分 "indexed assets" 和 "files with frontmatter"。
+- `stats` 新增 `indexed_assets` 统计项。
+
+### 改进
+
+- 文档和 Skill 安装说明补充项目级安装推荐。
+- `schema.md` 和 `usage.md` 明确解释 `types` 的双重语义。
+
 ## [0.1.0] - 2026-04-14
 
 ### 初始发布
