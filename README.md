@@ -117,11 +117,14 @@ pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/ass
 
 The skill is located at `skills/asset-index/` in this repository. Depending on your agent platform:
 
-**Option A — Manual copy:**
+**Option A — Manual copy (recommended: project-level):**
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
-# Or copy to your project's .opencode/skills/ directory
+# Recommended: install per project, because different projects have different asset rules
+cp -r asset-index/skills/asset-index your-project/.opencode/skills/
+
+# Only use global install if you want the same behavior across all projects:
+# cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
 **Option B — Agent platform command (if supported):**

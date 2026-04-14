@@ -117,11 +117,14 @@ pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/ass
 
 Skill 文件位于本仓库的 `skills/asset-index/` 目录下。根据你的 agent 平台，选择以下方式之一：
 
-**方式 A — 手动复制：**
+**方式 A — 手动复制（推荐项目级安装）：**
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
-# 或者复制到你项目的 .opencode/skills/ 目录
+# 推荐按项目安装，因为不同项目的资产规则和模式不同
+cp -r asset-index/skills/asset-index your-project/.opencode/skills/
+
+# 只有当你希望所有项目共用同一套行为时，才安装到全局：
+# cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
 **方式 B — Agent 平台命令（如果支持）：**

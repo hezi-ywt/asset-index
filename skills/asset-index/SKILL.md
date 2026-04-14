@@ -30,12 +30,16 @@ pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/ass
 
 ### 2. 安装本 Skill
 
-本 skill 位于仓库的 `skills/asset-index/` 目录下：
+本 skill 位于仓库的 `skills/asset-index/` 目录下。
+
+**推荐按项目安装**，因为不同项目的资产规则、类型定义和目录结构可能不同：
 
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
-# 或复制到项目目录的 .opencode/skills/ 下
+cp -r asset-index/skills/asset-index your-project/.opencode/skills/
+
+# 只有当你希望所有项目共用同一套行为时，才安装到全局：
+# cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
 ### 3. 初始化项目
