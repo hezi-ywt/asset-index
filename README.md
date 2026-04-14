@@ -105,10 +105,36 @@ Asset Index is a **Skill + CLI** project.
 
 **GitHub:** https://github.com/hezi-ywt/asset-index
 
-Copy the skill to your agent platform:
+#### 1. Install the CLI
+
+```bash
+pipx install asset-index-cli
+# Or install from the release wheel:
+pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/asset_index_cli-0.1.0-py3-none-any.whl
+```
+
+#### 2. Install the Skill
+
+The skill is located at `skills/asset-index/` in this repository. Depending on your agent platform:
+
+**Option A — Manual copy:**
+```bash
+git clone https://github.com/hezi-ywt/asset-index.git
+cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
+# Or copy to your project's .opencode/skills/ directory
+```
+
+**Option B — Agent platform command (if supported):**
+```bash
+npx skills add hezi-ywt/asset-index
+# Or your platform's equivalent skill installation command
+```
+
+**Option C — Tell your agent directly:**
 ```
 Install the asset-index skill from https://github.com/hezi-ywt/asset-index
 The skill follows the Agent Skills standard (https://agentskills.io).
+The skill path inside the repo is: skills/asset-index/
 ```
 
 ### Three-File Skill Design
