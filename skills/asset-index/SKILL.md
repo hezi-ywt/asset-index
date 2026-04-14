@@ -19,13 +19,11 @@ compatibility: "需要 asset-index-cli（pipx install asset-index-cli 或 pip in
 
 ```bash
 python3 --version               # 需要 Python >= 3.10
-pipx --version                  # 如果没有：brew install pipx (macOS) / apt install pipx (Linux)
-pipx install asset-index-cli    # 全局安装，无需激活环境
-```
 
-也可以从 GitHub Release 直接安装：
-```bash
-pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/asset_index_cli-0.1.0-py3-none-any.whl
+# 从源码克隆并安装到当前环境
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+pip install -e .
 ```
 
 ### 2. 安装本 Skill

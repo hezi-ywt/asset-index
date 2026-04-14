@@ -3,11 +3,8 @@
 ## 安装
 
 ```bash
-# 推荐方式（全局可用，无需激活环境）
-pipx install asset-index-cli
-
-# 开发方式
-git clone https://github.com/hezi-ywt/asset-index
+# 从源码克隆并安装
+git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
 pip install -e .
 ```

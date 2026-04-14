@@ -32,26 +32,14 @@ One command: scan `.md` files, read YAML frontmatter, index and validate. Asset 
 ## Quick Start
 
 ```bash
-pipx install asset-index-cli
-# or for development:
+# Clone and install from source
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
 pip install -e .
 
 # Initialize a project
 cd your-project/
 asset-index init
-
-# Scan and build index
-asset-index scan .
-
-# Search
-asset-index search "甲武神"
-asset-index search --type 剧本 --status 已整理
-
-# Validate
-asset-index check
-
-# Statistics
-asset-index stats
 ```
 
 ## Usage Examples

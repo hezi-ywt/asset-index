@@ -32,26 +32,14 @@
 ## 快速开始
 
 ```bash
-pipx install asset-index-cli
-# 或开发模式：
+# 从源码克隆并安装
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
 pip install -e .
 
 # 初始化项目
 cd your-project/
 asset-index init
-
-# 扫描并建立索引
-asset-index scan .
-
-# 搜索
-asset-index search "甲武神"
-asset-index search --type 剧本 --status 已整理
-
-# 验证
-asset-index check
-
-# 统计
-asset-index stats
 ```
 
 ## 使用示例
