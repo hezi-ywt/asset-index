@@ -91,6 +91,22 @@ strict_types: false
 | `date_fields` | `list[str]` | 必须匹配 `YYYY-MM-DD` 的字段 |
 | `strict_types` | `bool` | 为 true 时，若 `type` 不在 `types` 键中则告警 |
 
+## `types` 的双重语义
+
+`types` 现在不只是“按类型定义额外必填字段”，它还决定哪些 frontmatter 文件会被视为资产：
+
+- **如果配置了 `types`**：只有 `frontmatter.type` 命中 `types` 键的文件才会被纳入资产索引
+- **如果没有配置 `types`**：保持兼容，所有带 frontmatter 的文件都会被当作资产
+
+这让你可以把 `types` 当成项目级的“资产类型白名单”。
+
+例如：
+
+- `type: 剧本` → 如果 `剧本` 在 `types` 中，则会被索引
+- `type: 剧本分析` → 如果 `剧本分析` 不在 `types` 中，则不会被当成资产
+
+这对于区分“资产本体”和“分析/报告/索引文档”非常有用。
+
 ## 默认检查（始终执行）
 
 即使没有 `rules.yaml`，`asset-index check` 也会始终验证：

@@ -50,11 +50,15 @@ asset-index scan ./项目库/甲武神之战甲少年/
 
 输出示例：
 ```
-Scanned 156 files, found 142 assets with frontmatter.
+Scanned 156 files, found 128 indexed assets.
+  (142 files with frontmatter)
   (14 files without frontmatter)
 ```
 
 扫描结果会保存到 `.asset-index/cache.json`。
+
+如果 `rules.yaml` 中配置了 `types`，只有 `type` 出现在 `types` 里的 frontmatter 文件才会被视为资产并进入索引。
+如果没有配置 `types`，则保持兼容行为：所有带 frontmatter 的 `.md` 都会被视为资产。
 
 ## 搜索资产
 
@@ -197,6 +201,17 @@ strict_types: false
 ```
 
 修改规则后，重新运行 `asset-index check` 即可生效。
+
+### `types` 现在也决定“什么算资产”
+
+这是当前最重要的一条规则：
+
+- **如果配置了 `types`**：只有 `frontmatter.type` 出现在 `types` 中的文件才算资产
+- **如果没有配置 `types`**：保持兼容，所有带 frontmatter 的文件都算资产
+
+这意味着像报告、索引、分析文档，即使有 frontmatter，只要它们的 `type` 不在 `types` 中，就不会进入 `list/search/stats`，也不会参与批量 `check`。
+
+单文件检查 `asset-index check --file some.md` 是例外：它始终检查你指定的文件，方便在创建后立即验证。
 
 ## Agent 使用模式
 

@@ -37,6 +37,24 @@ def _is_valid_date(value: Any) -> bool:
     return bool(DATE_PATTERN.match(str(value)))
 
 
+def is_asset(asset: Asset, rules: dict[str, Any]) -> bool:
+    """Decide whether a markdown file should count as an asset.
+
+    Compatibility behavior:
+    - If no `types` are configured, any frontmatter-bearing markdown file is treated as an asset.
+    - If `types` are configured, only files whose `type` is present in `types` count as assets.
+    """
+    if not asset.frontmatter:
+        return False
+
+    type_rules = rules.get("types", {})
+    if not type_rules:
+        return True
+
+    asset_type = asset.asset_type
+    return bool(asset_type and asset_type in type_rules)
+
+
 def check_asset(asset: Asset, rules: dict[str, Any]) -> list[dict[str, Any]]:
     """Validate a single asset against rules."""
     issues: list[dict[str, Any]] = []

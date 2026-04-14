@@ -73,6 +73,9 @@ asset-index check --file ./世界观设定/角色/李雷/李雷.md
 asset-index stats --format json
 ```
 
+如果项目的 `.asset-index/rules.yaml` 配置了 `types`，只有 `type` 命中这些规则的 frontmatter 文件才会被视为资产并进入索引。
+如果没有配置 `types`，则保持兼容行为：所有带 frontmatter 的文件都会被视为资产。
+
 ## CLI 参考
 
 ```

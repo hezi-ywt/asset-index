@@ -10,7 +10,7 @@ import click
 import yaml
 
 from . import __version__
-from .checker import check_asset, load_rules
+from .checker import check_asset, is_asset, load_rules
 from .models import Asset
 from .store import get_project_root, load_index, save_index, scan_directory
 
@@ -63,6 +63,11 @@ strict_types: false
 """
 
 
+def _filter_assets(assets: list[Asset], rules: dict) -> list[Asset]:
+    """Filter scanned markdown files down to assets according to project rules."""
+    return [asset for asset in assets if is_asset(asset, rules)]
+
+
 @click.group(invoke_without_command=True)
 @click.version_option(version=__version__, prog_name="asset-index")
 @click.pass_context
@@ -103,15 +108,18 @@ def scan(path: str) -> None:
     target = Path(path).expanduser().resolve()
     project_root = get_project_root(str(target)) or str(target)
     cache_path = Path(project_root) / ".asset-index" / "cache.json"
+    rules = load_rules(project_root)
 
     assets = scan_directory(str(target))
     with_frontmatter = [a for a in assets if a.frontmatter]
+    indexed_assets = _filter_assets(assets, rules)
     without_frontmatter = len(assets) - len(with_frontmatter)
 
     save_index(str(cache_path), assets)
     click.echo(
-        f"Scanned {len(assets)} files, found {len(with_frontmatter)} assets with frontmatter."
+        f"Scanned {len(assets)} files, found {len(indexed_assets)} indexed assets."
     )
+    click.echo(f"  ({len(with_frontmatter)} files with frontmatter)")
     if without_frontmatter > 0:
         click.echo(f"  ({without_frontmatter} files without frontmatter)")
 
@@ -127,6 +135,14 @@ def _get_assets(path: str) -> list[Asset]:
         assets = scan_directory(str(target))
         save_index(str(cache_path), assets)
     return assets
+
+
+def _get_indexed_assets(path: str) -> list[Asset]:
+    """Load and filter assets according to project rules."""
+    target = Path(path).expanduser().resolve()
+    project_root = get_project_root(str(target)) or str(target)
+    rules = load_rules(project_root)
+    return _filter_assets(_get_assets(path), rules)
 
 
 @main.command()
@@ -147,14 +163,11 @@ def search(
     output_format: str,
 ) -> None:
     """Search indexed assets by keyword or filters."""
-    assets = _get_assets(path)
+    assets = _get_indexed_assets(path)
     results: list[Asset] = []
     query_lower = query.lower()
 
     for asset in assets:
-        if not asset.frontmatter:
-            continue
-
         if asset_type and asset.asset_type != asset_type:
             continue
         if status and asset.status != status:
@@ -198,8 +211,7 @@ def list(
     asset_type: str | None, status: str | None, path: str, output_format: str
 ) -> None:
     """List all indexed assets."""
-    assets = _get_assets(path)
-    results = [a for a in assets if a.frontmatter]
+    results = _get_indexed_assets(path)
 
     if asset_type:
         results = [a for a in results if a.asset_type == asset_type]
@@ -245,16 +257,12 @@ def check(file_path: str | None, path: str, output_format: str) -> None:
             click.echo(f"[asset-index] Cannot read file: {file_path}", err=True)
             sys.exit(1)
     else:
-        assets = _get_assets(path)
+        assets = _get_indexed_assets(path)
 
     all_issues: list[dict] = []
     has_errors = False
 
     for asset in assets:
-        # Skip non-asset markdown files (those without frontmatter) during bulk checks.
-        # When checking a single file, still report missing frontmatter.
-        if not file_path and not asset.frontmatter:
-            continue
         issues = check_asset(asset, rules)
         for issue in issues:
             all_issues.append(
@@ -290,6 +298,7 @@ def check(file_path: str | None, path: str, output_format: str) -> None:
 def stats(path: str, output_format: str) -> None:
     """Show asset statistics."""
     assets = _get_assets(path)
+    indexed_assets = _get_indexed_assets(path)
     with_fm = [a for a in assets if a.frontmatter]
     without_fm = len(assets) - len(with_fm)
 
@@ -297,7 +306,7 @@ def stats(path: str, output_format: str) -> None:
     status_counts: dict[str, int] = {}
     tag_counts: dict[str, int] = {}
 
-    for asset in with_fm:
+    for asset in indexed_assets:
         t = asset.asset_type or "(no type)"
         type_counts[t] = type_counts.get(t, 0) + 1
         s = asset.status or "(no status)"
@@ -308,6 +317,7 @@ def stats(path: str, output_format: str) -> None:
     data = {
         "total_files": len(assets),
         "with_frontmatter": len(with_fm),
+        "indexed_assets": len(indexed_assets),
         "without_frontmatter": without_fm,
         "type_distribution": type_counts,
         "status_distribution": status_counts,
@@ -321,6 +331,7 @@ def stats(path: str, output_format: str) -> None:
     else:
         click.echo(f"Total files scanned: {len(assets)}")
         click.echo(f"  With frontmatter: {len(with_fm)}")
+        click.echo(f"  Indexed assets: {len(indexed_assets)}")
         click.echo(f"  Without frontmatter: {without_fm}")
         click.echo()
         click.echo("Type distribution:")
