@@ -22,7 +22,7 @@ asset-index --help
 asset-index init
 ```
 
-这会创建 `.asset-index/` 目录和一份示例 `rules.yaml`：
+这会在**项目根目录**创建 `.asset-index/` 目录和一份示例 `rules.yaml`：
 
 ```text
 your-project/
@@ -33,7 +33,7 @@ your-project/
 └── 创作产出/
 ```
 
-编辑 `rules.yaml` 来匹配你项目的 frontmatter 规范。
+编辑这份位于**项目根**的 `rules.yaml`，让它匹配你项目的资产索引规范。它不是 skill 目录里的文件，而是 CLI 的项目级运行配置。
 
 ## 扫描资产
 
@@ -156,9 +156,9 @@ Top tags:
   第一季: 8
 ```
 
-## 自定义验证规则
+## 自定义项目级资产索引规范
 
-编辑 `.asset-index/rules.yaml`：
+编辑项目根目录下的 `.asset-index/rules.yaml`：
 
 ```yaml
 # 所有资产都必须有的字段
@@ -197,7 +197,7 @@ date_fields:
 strict_types: false
 ```
 
-修改规则后，重新运行 `asset-index check` 即可生效。
+修改这份项目级规则后，重新运行 `asset-index scan` / `check` 即可生效。
 
 ### `types` 现在也决定“什么算资产”
 
@@ -246,5 +246,8 @@ A: 当前版本会扫描所有子目录。如果目录中有不需要索引的 `
 **Q: 缓存过期了怎么办？**
 A: 重新运行 `asset-index scan .` 即可重建缓存。
 
+**Q: `.asset-index/rules.yaml` 应该放在 skill 目录里吗？**
+A: 不应该。运行中的 `rules.yaml` 应放在**项目根目录**的 `.asset-index/rules.yaml` 中，因为它是 CLI 的项目级运行配置。skill 可以解释和辅助维护这份规则，但不是规则本体。
+
 **Q: 可以在没有 rules.yaml 的项目中使用吗？**
-A: 可以。没有规则时，工具只做最基础的检查（frontmatter 存在、title/type/status 有值）。
+A: 可以。没有规则时，工具只做最基础的检查（frontmatter 存在、title/type/status 有值），并按兼容模式处理带 frontmatter 的文件。

@@ -36,7 +36,7 @@ Asset Index 是一个**基于 frontmatter 的原子只读技能**。
 Asset Index 的解决方案：
 
 - **frontmatter 即元数据**：数据和元数据共存于 `.md` 文件，天然同步
-- **规则驱动**：`.asset-index/rules.yaml` 让每个项目自定义验证规则
+- **规则驱动**：项目根目录的 `.asset-index/rules.yaml` 让每个项目定义自己的资产索引规范
 - **统一索引层**：一次扫描，多次查询
 - **创建→检查闭环**：新资产诞生后立即验证，问题早发现早修复
 
@@ -66,7 +66,7 @@ YAML frontmatter 是 Markdown 生态的标准做法：
 - 游戏项目需要 `level`（关卡）
 - 小说项目需要 `chapter`（章节）
 
-把规则外置到 `rules.yaml`，工具代码保持通用，一个 CLI 可以服务多种项目。
+把规则外置到**项目根目录**的 `rules.yaml`，工具代码保持通用，一个 CLI 可以服务多种项目。skill 可以引用和辅助维护这些规则，但运行时 source of truth 仍然是项目根的 `.asset-index/rules.yaml`。
 
 ### 为什么缓存索引
 

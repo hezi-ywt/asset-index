@@ -33,7 +33,9 @@
 
 ## rules.yaml 格式
 
-将该文件放在项目根目录的 `.asset-index/rules.yaml`。
+将该文件放在**项目根目录**的 `.asset-index/rules.yaml`。
+
+这是 CLI 的项目级运行配置，也是运行时的 source of truth。它不应放在 skill 目录中；skill 可以引用它、解释它，或提供模板，但不替代它。
 
 ```yaml
 # 每个资产的 frontmatter 都必须包含的字段
