@@ -56,6 +56,30 @@ cd your-project/
 asset-index init                # 创建 .asset-index/rules.yaml
 ```
 
+## 更新旧安装
+
+如果之前已经安装过 `asset-index`，当前推荐的升级方式是：更新本地源码目录，然后重新执行 `pip install -e .`。
+
+```bash
+cd /path/to/asset-index
+git pull
+pip install -e .
+```
+
+如果本 skill 是手动复制到项目目录里的，更新源码后也请重新复制 `skills/asset-index/`。
+
+本项目当前没有独立发布版；默认按源码克隆目录进行升级。
+
+## 检查更新
+
+先检查本地源码仓库是否落后于远端；如果已经落后，更新源码并同步 CLI 与 skill。
+
+```bash
+cd /path/to/asset-index
+git fetch
+git log HEAD..origin/main --oneline
+```
+
 ## 快速参考
 
 ```bash
