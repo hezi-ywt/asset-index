@@ -83,35 +83,49 @@ Commands:
 
 **What it does NOT do** — create, edit, or delete `.md` files. Those operations belong to the agent or higher-level skills.
 
+**The tool is unified; the rules are project-specific.** The `asset-index` CLI is one shared indexing engine, but each project should define its own asset boundary through `.asset-index/rules.yaml`.
+
+That is why the default recommendation is **project-level installation and usage**: not because the CLI changes per project, but because different projects may define assets, types, and directory conventions very differently.
+
 This separation keeps the tool small, predictable, and safe for automated environments.
 
 ## AI Agent Integration
 
 Asset Index is a **Skill + CLI** project.
 
+Installing the skill alone is not enough. When an agent installs the `asset-index` skill, it should also install the `asset-index` CLI in the same environment, because the skill provides instructions/context while the CLI is what actually runs `asset-index` commands.
+
 ### Install
 
 **GitHub:** https://github.com/hezi-ywt/asset-index
 
-#### 1. Install the CLI
+#### 1. Install the CLI first
+
+Before using or installing the skill, install the CLI in the same project environment:
 
 ```bash
-pipx install asset-index-cli
-# Or install from the release wheel:
-pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/asset_index_cli-0.1.0-py3-none-any.whl
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+pip install -e .
 ```
 
 #### 2. Install the Skill
 
-The skill is located at `skills/asset-index/` in this repository. Depending on your agent platform:
+The skill is located at `skills/asset-index/` in this repository. Installing the skill should always be paired with installing the CLI above.
+
+**Default recommendation: install per project.** Different projects may have different asset rules, types, and directory structures, so project-level installation should be the standard choice.
 
 **Option A — Manual copy (recommended: project-level):**
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-# Recommended: install per project, because different projects have different asset rules
+# Recommended default: install per project, because different projects have different asset rules
+# Also install the CLI in the same environment before using the skill
+cd asset-index
+pip install -e .
+cd ..
 cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 
-# Only use global install if you want the same behavior across all projects:
+# Only use global install if you intentionally want one shared behavior across all projects:
 # cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
@@ -119,6 +133,8 @@ cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 ```bash
 npx skills add hezi-ywt/asset-index
 # Or your platform's equivalent skill installation command
+# After adding the skill, also install the CLI in the environment where the agent will run:
+# git clone https://github.com/hezi-ywt/asset-index.git && cd asset-index && pip install -e .
 ```
 
 **Option C — Tell your agent directly:**
@@ -126,6 +142,7 @@ npx skills add hezi-ywt/asset-index
 Install the asset-index skill from https://github.com/hezi-ywt/asset-index
 The skill follows the Agent Skills standard (https://agentskills.io).
 The skill path inside the repo is: skills/asset-index/
+Also install the asset-index CLI in the same project environment by cloning the repo and running `pip install -e .`.
 ```
 
 ### Three-File Skill Design

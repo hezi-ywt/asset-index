@@ -86,35 +86,49 @@ Commands:
 
 **它不做** — 创建、编辑、删除 `.md` 文件。这些操作交给 agent 或上层 skill。
 
+**统一的是工具，不统一的是规则。** `asset-index` CLI 是统一的索引引擎，但每个项目都应通过自己的 `.asset-index/rules.yaml` 定义“什么算资产”。
+
+因此，默认推荐**项目级安装和使用**：不是因为工具不统一，而是因为不同项目的资产定义、类型体系和目录结构可能有较大区别。
+
 这种分离让工具保持小巧、可预测、对自动化环境安全。
 
 ## AI Agent 集成
 
 Asset Index 是一个 **Skill + CLI** 项目。
 
+**只安装 skill 不够。** 当 agent 安装 `asset-index` skill 时，也必须在同一个运行环境里安装 `asset-index` CLI，因为 skill 提供的是说明和上下文，真正执行 `asset-index` 命令的是 CLI。
+
 ### 安装
 
 **GitHub:** https://github.com/hezi-ywt/asset-index
 
-#### 1. 安装 CLI 工具
+#### 1. 先安装 CLI 工具
+
+在安装或使用 skill 之前，先在同一个项目环境中安装 CLI：
 
 ```bash
-pipx install asset-index-cli
-# 或者从 release wheel 安装：
-pip install https://github.com/hezi-ywt/asset-index/releases/download/v0.1.0/asset_index_cli-0.1.0-py3-none-any.whl
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+pip install -e .
 ```
 
 #### 2. 安装 Skill
 
-Skill 文件位于本仓库的 `skills/asset-index/` 目录下。根据你的 agent 平台，选择以下方式之一：
+Skill 文件位于本仓库的 `skills/asset-index/` 目录下。安装 skill 时，应始终和上面的 CLI 安装配套进行。
+
+**默认推荐：项目级安装。** 不同项目的资产规则、类型定义和目录结构可能不同，因此应优先按项目安装，而不是全局安装。
 
 **方式 A — 手动复制（推荐项目级安装）：**
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-# 推荐按项目安装，因为不同项目的资产规则和模式不同
+# 默认推荐按项目安装，因为不同项目的资产规则和模式不同
+# 在使用 skill 前，也要先在同一个环境安装 CLI
+cd asset-index
+pip install -e .
+cd ..
 cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 
-# 只有当你希望所有项目共用同一套行为时，才安装到全局：
+# 只有当你明确希望所有项目共用同一套行为时，才安装到全局：
 # cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
@@ -122,6 +136,8 @@ cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 ```bash
 npx skills add hezi-ywt/asset-index
 # 或使用你所在平台的等效 skill 安装命令
+# 添加 skill 之后，也要在 agent 运行环境中安装 CLI：
+# git clone https://github.com/hezi-ywt/asset-index.git && cd asset-index && pip install -e .
 ```
 
 **方式 C — 直接告诉 agent：**
@@ -129,6 +145,7 @@ npx skills add hezi-ywt/asset-index
 从 https://github.com/hezi-ywt/asset-index 安装 asset-index skill
 该 skill 遵循 Agent Skills 标准（https://agentskills.io）
 仓库内的 skill 路径为：skills/asset-index/
+并且要在同一个项目环境中克隆仓库后执行 `pip install -e .` 来安装 asset-index CLI
 ```
 
 ### 三文件 Skill 设计

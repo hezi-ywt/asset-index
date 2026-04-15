@@ -9,8 +9,10 @@ Asset Index 是一个**基于 frontmatter 的原子只读技能**，用于内容
 ## 快速使用
 
 ```bash
-# 安装
-pipx install asset-index-cli
+# 安装（默认推荐项目级源码安装）
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+pip install -e .
 
 # 初始化项目
 cd your-project/
@@ -46,7 +48,8 @@ src/asset_index/
 
 - **frontmatter 即唯一真实来源**：每个 `.md` 文件自带元数据，无需额外数据库。
 - **只读 CLI**：创建和编辑是 agent/上层 skill 的职责，工具只负责索引和检查。
-- **规则驱动验证**：`.asset-index/rules.yaml` 定义每个项目的必填字段、允许类型和允许状态。
+- **统一工具，项目级规则**：CLI 是统一引擎，但每个项目通过项目根目录的 `.asset-index/rules.yaml` 定义自己的资产边界、允许类型和验证要求。
+- **默认项目级安装**：因为不同项目的资产管理模式可能差异很大，推荐在项目环境内从源码安装并使用，而不是默认全局安装。
 - **Agent 安全输出**：stdout = 数据，stderr = `[asset-index] ...` 错误，exit 0/1。
 - **缓存加速**：`.asset-index/cache.json` 存储扫描结果，`scan` 命令负责重建。
 
