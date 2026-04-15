@@ -1,7 +1,7 @@
 ---
 name: asset-index
-description: "基于 frontmatter 的资产索引管理。当需要扫描带有 YAML frontmatter 的 Markdown 文件、按 type/status/tag 搜索内容创作资产、按项目规则验证资产元数据、或在创建后检查资产健康度时使用。也用于构建诸如'找出所有草稿状态的角色'或'列出第一季所有剧本'之类的查询。"
-compatibility: "需要 asset-index-cli（pipx install asset-index-cli 或 pip install -e .）"
+description: "基于 frontmatter 的资产索引管理。当用户说使用资产管理、扫描带有 YAML frontmatter 的 Markdown 文件、按 type/status/tag 搜索内容创作资产、按项目规则验证资产元数据、或在创建后检查资产健康度时使用。也用于构建诸如'找出所有草稿状态的角色'、'列出第一季所有剧本'、'使用资产管理看一下这个项目里有哪些资产'之类的查询。"
+compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI。推荐项目级安装：git clone 仓库后执行 pip install -e .；仅安装 skill 本身并不能执行 asset-index 命令。"
 ---
 
 # Asset Index -- 基于 Frontmatter 的资产管理
@@ -10,12 +10,14 @@ compatibility: "需要 asset-index-cli（pipx install asset-index-cli 或 pip in
 
 本 skill 分为三个文件：
 - **SKILL.md**（本文件）—— 命令语法、输出约定、错误速查。稳定知识。
-- **references/schema.md** —— 资产 schema、rules.yaml 格式、验证规则说明。
+- **references/schema.md** —— 资产 schema、项目根 `.asset-index/rules.yaml` 的格式，以及验证规则说明。
 - **references/user-notes.md** —— 用户偏好、习得模式、项目特定约定。由你在使用过程中持续维护。
 
 ## 安装
 
 ### 1. 安装 CLI 工具
+
+安装或使用本 skill 之前，必须先在同一个 agent 运行环境中安装 `asset-index` CLI：
 
 ```bash
 python3 --version               # 需要 Python >= 3.10
@@ -30,13 +32,18 @@ pip install -e .
 
 本 skill 位于仓库的 `skills/asset-index/` 目录下。
 
+安装本 skill 时，也要同时安装 CLI。skill 提供的是说明和上下文，真正执行命令的是 `asset-index` CLI。
+
 **推荐按项目安装**，因为不同项目的资产规则、类型定义和目录结构可能不同：
 
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+pip install -e .
+cd ..
 cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 
-# 只有当你希望所有项目共用同一套行为时，才安装到全局：
+# 只有当你明确希望所有项目共用同一套行为时，才安装到全局：
 # cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
 ```
 
@@ -91,7 +98,9 @@ asset-index check --file ./path/to/new-asset.md
 
 ### 规则驱动验证
 
-验证规则存放在每个项目的 `.asset-index/rules.yaml` 中。规则格式见 `references/schema.md`。在检查项目前，如需了解必填字段，可先阅读该项目的 `rules.yaml`。
+验证规则存放在每个项目**根目录**的 `.asset-index/rules.yaml` 中。规则格式见 `references/schema.md`。在检查项目前，如需了解必填字段，应先阅读该项目根目录下的 `rules.yaml`。
+
+这个文件**不属于 skill 目录**。skill 负责解释、引用和辅助维护流程；真正的项目级资产索引规范属于项目根目录。
 
 ### 成本与可组合性
 
@@ -116,7 +125,7 @@ Asset Index 将扫描结果缓存在 `.asset-index/cache.json` 中。运行 `sca
 
 ## 资产 Schema
 
-完整 schema、常用字段定义和 `rules.yaml` 格式见 `references/schema.md`。
+完整 schema、常用字段定义和项目根 `rules.yaml` 格式见 `references/schema.md`。
 
 ## 持续改进
 
