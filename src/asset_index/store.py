@@ -47,12 +47,38 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return fm, body
 
 
-def scan_directory(path: str) -> list[Asset]:
-    """Recursively scan a directory for .md files and parse their frontmatter."""
+def _is_excluded(path: Path, root: Path, exclude_paths: list[str]) -> bool:
+    """Match relative path against prefix or glob patterns in *exclude_paths*."""
+    try:
+        rel = path.relative_to(root)
+    except ValueError:
+        return False
+
+    rel_str = str(rel)
+
+    for pattern in exclude_paths:
+        if pattern.startswith("./"):
+            pattern = pattern[2:]
+        if "*" in pattern:
+            if rel.match(pattern):
+                return True
+        else:
+            if rel_str == pattern or rel_str.startswith(pattern.rstrip("/") + "/"):
+                return True
+
+    return False
+
+
+def scan_directory(path: str, *, exclude_paths: list[str] | None = None) -> list[Asset]:
+    """Scan *path* for .md files, skipping any matching *exclude_paths*."""
     root = Path(path).expanduser().resolve()
+    excludes = exclude_paths or []
     assets: list[Asset] = []
 
     for md_path in root.rglob("*.md"):
+        if excludes and _is_excluded(md_path, root, excludes):
+            continue
+
         try:
             text = md_path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):

@@ -40,6 +40,19 @@ pip install -e .
 # Initialize a project
 cd your-project/
 asset-index init
+
+# Scan and build index
+asset-index scan .
+
+# Search
+asset-index search "主角"
+asset-index search --type 剧本 --status 已整理
+
+# Validate
+asset-index check
+
+# Statistics
+asset-index stats
 ```
 
 ## Update for Existing Users
@@ -82,7 +95,7 @@ If this prints commits, your local copy is behind and can be updated. You can al
 
 ```bash
 # Scan a specific directory
-asset-index scan ./项目库/甲武神之战甲少年/
+asset-index scan ./assets/my-project/
 
 # Search by tag
 asset-index search --tag 时间线

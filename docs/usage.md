@@ -42,7 +42,7 @@ your-project/
 asset-index scan .
 
 # 扫描指定目录
-asset-index scan ./项目库/甲武神之战甲少年/
+asset-index scan ./assets/my-project/
 ```
 
 输出示例：
@@ -61,7 +61,7 @@ Scanned 156 files, found 128 indexed assets.
 
 ### 按关键词
 ```bash
-asset-index search "甲武神"
+asset-index search "主角"
 ```
 
 ### 按类型

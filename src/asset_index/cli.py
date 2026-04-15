@@ -17,6 +17,12 @@ from .store import get_project_root, load_index, save_index, scan_directory
 SAMPLE_RULES = """# Asset index validation rules for this project.
 # Customize these rules to match your project's frontmatter conventions.
 
+# Directories to skip during scan (relative path prefixes or glob patterns)
+exclude_paths:
+  - .opencode/
+  - .asset-index/
+  - node_modules/
+
 # Fields that must exist in every asset's frontmatter
 required_fields:
   - title
@@ -101,6 +107,11 @@ def init(force: bool, path: str) -> None:
     click.echo(f"[asset-index] Created sample rules: {rules_file}")
 
 
+def _load_exclude_paths(project_root: str) -> list[str]:
+    rules = load_rules(project_root)
+    return rules.get("exclude_paths", [])
+
+
 @main.command()
 @click.argument("path", default=".")
 def scan(path: str) -> None:
@@ -109,8 +120,9 @@ def scan(path: str) -> None:
     project_root = get_project_root(str(target)) or str(target)
     cache_path = Path(project_root) / ".asset-index" / "cache.json"
     rules = load_rules(project_root)
+    excludes = _load_exclude_paths(project_root)
 
-    assets = scan_directory(str(target))
+    assets = scan_directory(str(target), exclude_paths=excludes)
     with_frontmatter = [a for a in assets if a.frontmatter]
     indexed_assets = _filter_assets(assets, rules)
     without_frontmatter = len(assets) - len(with_frontmatter)
@@ -132,7 +144,8 @@ def _get_assets(path: str) -> list[Asset]:
 
     assets = load_index(str(cache_path))
     if assets is None:
-        assets = scan_directory(str(target))
+        excludes = _load_exclude_paths(project_root)
+        assets = scan_directory(str(target), exclude_paths=excludes)
         save_index(str(cache_path), assets)
     return assets
 

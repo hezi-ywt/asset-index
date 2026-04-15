@@ -40,6 +40,19 @@ pip install -e .
 # 初始化项目
 cd your-project/
 asset-index init
+
+# 扫描并建立索引
+asset-index scan .
+
+# 搜索
+asset-index search "主角"
+asset-index search --type 剧本 --status 已整理
+
+# 验证
+asset-index check
+
+# 统计
+asset-index stats
 ```
 
 ## 老用户更新方式
@@ -82,7 +95,7 @@ git log HEAD..origin/main --oneline
 
 ```bash
 # 扫描指定目录
-asset-index scan ./项目库/甲武神之战甲少年/
+asset-index scan ./assets/my-project/
 
 # 按标签搜索
 asset-index search --tag 时间线
