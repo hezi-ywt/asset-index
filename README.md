@@ -42,6 +42,42 @@ cd your-project/
 asset-index init
 ```
 
+## Update for Existing Users
+
+There is no official package-release upgrade flow yet. Update from source.
+
+### Update the CLI
+
+If you already installed `asset-index`, update your local source checkout and reinstall the editable CLI:
+
+```bash
+cd /path/to/asset-index
+git pull
+pip install -e .
+```
+
+### Update the Skill
+
+If you copied `skills/asset-index/` manually into a project, re-copy the updated skill directory after pulling the latest source:
+
+```bash
+cp -r /path/to/asset-index/skills/asset-index your-project/.opencode/skills/
+```
+
+For existing users, both parts may need updating: the CLI code and the skill instructions.
+
+## How to Check for Updates
+
+In your local source checkout:
+
+```bash
+cd /path/to/asset-index
+git fetch
+git log HEAD..origin/main --oneline
+```
+
+If this prints commits, your local copy is behind and can be updated. You can also compare your local clone with the latest commits on GitHub.
+
 ## Usage Examples
 
 ```bash

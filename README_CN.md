@@ -42,6 +42,42 @@ cd your-project/
 asset-index init
 ```
 
+## 老用户更新方式
+
+当前没有官方包发布渠道，默认通过**源码更新**。
+
+### 更新 CLI
+
+如果你之前已经安装过 `asset-index` CLI，进入本地源码目录后执行：
+
+```bash
+cd /path/to/asset-index
+git pull
+pip install -e .
+```
+
+### 更新 Skill
+
+如果你之前是手动复制 `skills/asset-index/` 到项目里的，拉取最新源码后请重新复制一遍：
+
+```bash
+cp -r /path/to/asset-index/skills/asset-index your-project/.opencode/skills/
+```
+
+更新旧安装时，建议把 **CLI 和 skill 一起检查并同步更新**。
+
+## 如何检查更新
+
+可以先在本地源码目录中执行：
+
+```bash
+cd /path/to/asset-index
+git fetch
+git log HEAD..origin/main --oneline
+```
+
+如果有输出，说明远端有新提交可更新。你也可以直接查看 GitHub 仓库最近的提交记录。
+
 ## 使用示例
 
 ```bash
