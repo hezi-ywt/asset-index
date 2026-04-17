@@ -48,18 +48,29 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
 
 
 def _is_excluded(path: Path, root: Path, exclude_paths: list[str]) -> bool:
-    """Match relative path against prefix or glob patterns in *exclude_paths*."""
+    """Match relative path against prefix or glob patterns in *exclude_paths*.
+
+    All comparisons are done in POSIX form (forward slashes). Without this,
+    Windows ``Path.relative_to`` returns ``node_modules\\sub`` and patterns
+    like ``node_modules/`` from rules.yaml would never match.
+    """
     try:
         rel = path.relative_to(root)
     except ValueError:
         return False
 
-    rel_str = str(rel)
+    # Normalize the actual path to forward slashes for cross-platform match.
+    rel_str = rel.as_posix()
 
     for pattern in exclude_paths:
+        # Normalize the pattern too: strip "./" prefix, swap any backslashes
+        # a Windows-author wrote in their rules.yaml.
+        pattern = pattern.replace("\\", "/")
         if pattern.startswith("./"):
             pattern = pattern[2:]
         if "*" in pattern:
+            # PurePath.match uses POSIX-style glob, so passing the pattern
+            # as-is works against the as_posix()-normalized rel.
             if rel.match(pattern):
                 return True
         else:
