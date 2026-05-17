@@ -24,10 +24,10 @@ compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI（No
 ```bash
 node --version                  # 需要 Node.js >= 18
 
-# 方式 A：npm 全局安装（待 npm 发布后生效）
-# npm install -g asset-index-cli
+# 方式 A：npm 全局安装（推荐）
+npm install -g asset-index-cli
 
-# 方式 B：从源码安装（当前默认方式）
+# 方式 B：从源码安装（想改代码再用这个）
 git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
 npm install

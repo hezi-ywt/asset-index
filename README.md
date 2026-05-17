@@ -33,17 +33,12 @@ One command: scan `.md` files, read YAML frontmatter, index and validate. Asset 
 
 ## Quick Start
 
-> ⚠️ **Status**: `asset-index-cli` is **not yet published to npm**. Install from source (see [Install From Source](#install-from-source) below). The npm commands here will work once we publish.
-
 ```bash
-# (Future — once published to npm)
-# npm install -g asset-index-cli
+# Install globally via npm (Node.js 18+ required)
+npm install -g asset-index-cli
 
-# Right now: install from source
-git clone https://github.com/hezi-ywt/asset-index.git
-cd asset-index
-npm install
-npm link
+# Or run without installing
+npx asset-index-cli init
 
 # Initialize a project
 cd your-project/
@@ -65,7 +60,7 @@ asset-index stats
 
 ## Install From Source
 
-**Current default install method** (until the npm package is published):
+Alternative if you want to hack on the code:
 
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git

@@ -33,13 +33,11 @@
 
 ## 快速开始
 
-> ⚠️ **状态**：`asset-index-cli` **暂未发布到 npm**。目前请用源码安装（下方）。`npm install -g asset-index-cli` 会在发布后生效。
-
 ```bash
-# （未来——发布到 npm 之后）
-# npm install -g asset-index-cli
+# 全局安装（Node.js 18+）
+npm install -g asset-index-cli
 
-# 当前默认方式：从源码安装（Node.js 18+）
+# 或从源码安装（想改代码再用这个）
 git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
 npm install

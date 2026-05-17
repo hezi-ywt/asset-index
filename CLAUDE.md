@@ -12,11 +12,8 @@ Asset Index 是一个**基于 frontmatter 的原子只读技能**，用于内容
 
 ```bash
 # 安装（Node.js >= 18）
-# 当前默认从源码（npm 包待发布）：
-git clone https://github.com/hezi-ywt/asset-index.git && cd asset-index && npm install && npm link
-
-# 未来 npm 发布后：
-# npm install -g asset-index-cli
+npm install -g asset-index-cli
+# 或从源码：git clone https://github.com/hezi-ywt/asset-index.git && cd asset-index && npm install && npm link
 
 # 初始化项目
 cd your-project/
