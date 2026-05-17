@@ -2,11 +2,17 @@
 
 ## 安装
 
+> v0.3.0 起改用 Node.js 实现。需要 Node.js >= 18。
+
 ```bash
-# 从源码克隆并安装
+# 方式 A：npm 全局安装
+npm install -g asset-index-cli
+
+# 方式 B：从源码安装
 git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
-pip install -e .
+npm install
+npm link
 ```
 
 验证安装：

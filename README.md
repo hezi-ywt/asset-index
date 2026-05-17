@@ -29,13 +29,16 @@ One command: scan `.md` files, read YAML frontmatter, index and validate. Asset 
 | ⚙️ | **Rule-driven** | Customize validation via `.asset-index/rules.yaml` |
 | 🤖 | **Agent-ready** | Plain text stdout, `[asset-index]` stderr, exit 0/1 |
 
+> **v0.3.0 update**: Rewritten in **Node.js** (was Python). Install via `npm` — no Python required. Same CLI commands, same `rules.yaml` format, same behavior.
+
 ## Quick Start
 
 ```bash
-# Clone and install from source
-git clone https://github.com/hezi-ywt/asset-index.git
-cd asset-index
-pip install -e .
+# Install globally via npm (Node.js 18+ required)
+npm install -g asset-index-cli
+
+# Or run without installing
+npx asset-index-cli init
 
 # Initialize a project
 cd your-project/
@@ -55,18 +58,31 @@ asset-index check
 asset-index stats
 ```
 
+## Install From Source
+
+If `asset-index-cli` is not yet published to npm, install from source:
+
+```bash
+git clone https://github.com/hezi-ywt/asset-index.git
+cd asset-index
+npm install
+npm link              # link the asset-index command globally
+```
+
 ## Update for Existing Users
 
-There is no official package-release upgrade flow yet. Update from source.
+### Update the CLI (npm)
 
-### Update the CLI
+```bash
+npm update -g asset-index-cli
+```
 
-If you already installed `asset-index`, update your local source checkout and reinstall the editable CLI:
+### Update the CLI (source install)
 
 ```bash
 cd /path/to/asset-index
 git pull
-pip install -e .
+npm install
 ```
 
 ### Update the Skill
@@ -76,20 +92,6 @@ If you copied `skills/asset-index/` manually into a project, re-copy the updated
 ```bash
 cp -r /path/to/asset-index/skills/asset-index your-project/.opencode/skills/
 ```
-
-For existing users, both parts may need updating: the CLI code and the skill instructions.
-
-## How to Check for Updates
-
-In your local source checkout:
-
-```bash
-cd /path/to/asset-index
-git fetch
-git log HEAD..origin/main --oneline
-```
-
-If this prints commits, your local copy is behind and can be updated. You can also compare your local clone with the latest commits on GitHub.
 
 ## Usage Examples
 
@@ -134,8 +136,6 @@ Commands:
 
 **The tool is unified; the rules are project-specific.** The `asset-index` CLI is one shared indexing engine, but each project should define its own asset boundary through `.asset-index/rules.yaml`.
 
-That is why the default recommendation is **project-level installation and usage**: not because the CLI changes per project, but because different projects may define assets, types, and directory conventions very differently.
-
 This separation keeps the tool small, predictable, and safe for automated environments.
 
 ## AI Agent Integration
@@ -150,58 +150,24 @@ Installing the skill alone is not enough. When an agent installs the `asset-inde
 
 #### 1. Install the CLI first
 
-Before using or installing the skill, install the CLI in the same project environment:
-
 ```bash
+# Via npm
+npm install -g asset-index-cli
+
+# Or from source
 git clone https://github.com/hezi-ywt/asset-index.git
-cd asset-index
-pip install -e .
+cd asset-index && npm install && npm link
 ```
 
 #### 2. Install the Skill
 
-The skill is located at `skills/asset-index/` in this repository. Installing the skill should always be paired with installing the CLI above.
+The skill is located at `skills/asset-index/` in this repository.
 
-**Default recommendation: install per project.** Different projects may have different asset rules, types, and directory structures, so project-level installation should be the standard choice.
+**Default recommendation: install per project.**
 
-**Option A — Manual copy (recommended: project-level):**
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
-# Recommended default: install per project, because different projects have different asset rules
-# Also install the CLI in the same environment before using the skill
-cd asset-index
-pip install -e .
-cd ..
 cp -r asset-index/skills/asset-index your-project/.opencode/skills/
-
-# Only use global install if you intentionally want one shared behavior across all projects:
-# cp -r asset-index/skills/asset-index ~/.config/opencode/skills/
-```
-
-**Option B — Agent platform command (if supported):**
-```bash
-npx skills add hezi-ywt/asset-index
-# Or your platform's equivalent skill installation command
-# After adding the skill, also install the CLI in the environment where the agent will run:
-# git clone https://github.com/hezi-ywt/asset-index.git && cd asset-index && pip install -e .
-```
-
-**Option C — Tell your agent directly:**
-```
-Install the asset-index skill from https://github.com/hezi-ywt/asset-index
-The skill follows the Agent Skills standard (https://agentskills.io).
-The skill path inside the repo is: skills/asset-index/
-Also install the asset-index CLI in the same project environment by cloning the repo and running `pip install -e .`.
-```
-
-### Three-File Skill Design
-
-```
-skills/asset-index/
-├── SKILL.md                    # Stable facts: commands, output contract, errors
-└── references/
-    ├── schema.md               # Asset schema and rules.yaml format
-    └── user-notes.md           # Agent-maintained memory
 ```
 
 ### The Create → Check Loop
@@ -217,17 +183,19 @@ If validation fails, the agent fixes the frontmatter and re-checks. This ensures
 ## Project Structure
 
 ```
-src/asset_index/
-  cli.py            Click CLI entry point
-  models.py         Asset dataclass
-  store.py          Frontmatter parsing, scanning, caching
-  checker.py        Rule-driven validation engine
+src/
+  cli.js            Commander CLI entry point
+  models.js         Asset class
+  store.js          Frontmatter parsing, scanning, caching
+  checker.js        Rule-driven validation engine
+bin/
+  asset-index.js    npm bin shebang
 ```
 
 ## Requirements
 
-- Python >= 3.10
-- click, PyYAML
+- **Node.js >= 18**
+- Dependencies: `commander`, `gray-matter`, `js-yaml`, `fast-glob`
 
 ## License
 

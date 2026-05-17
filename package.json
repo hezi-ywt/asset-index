@@ -1,0 +1,53 @@
+{
+  "name": "asset-index-cli",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "原子 CLI：扫描 / 检查 / 索引基于 YAML frontmatter 的 Markdown 资产。设计用于跟 AI agent 协作，仅读不写。",
+  "bin": {
+    "asset-index": "./bin/asset-index.js"
+  },
+  "main": "./src/cli.js",
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "README_CN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "gray-matter": "^4.0.3",
+    "fast-glob": "^3.3.2",
+    "js-yaml": "^4.1.0"
+  },
+  "scripts": {
+    "start": "node bin/asset-index.js",
+    "test": "node --test tests/"
+  },
+  "author": {
+    "name": "hezi-ywt"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/hezi-ywt/asset-index",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hezi-ywt/asset-index.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hezi-ywt/asset-index/issues"
+  },
+  "keywords": [
+    "frontmatter",
+    "markdown",
+    "asset",
+    "index",
+    "cli",
+    "scanner",
+    "validator",
+    "agent",
+    "ai"
+  ]
+}

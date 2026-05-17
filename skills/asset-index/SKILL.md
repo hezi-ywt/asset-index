@@ -1,12 +1,14 @@
 ---
 name: asset-index
 description: "基于 frontmatter 的资产索引管理。当用户说使用资产管理、扫描带有 YAML frontmatter 的 Markdown 文件、按 type/status/tag 搜索内容创作资产、按项目规则验证资产元数据、或在创建后检查资产健康度时使用。也用于构建诸如'找出所有草稿状态的角色'、'列出第一季所有剧本'、'使用资产管理看一下这个项目里有哪些资产'之类的查询。"
-compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI。推荐项目级安装：git clone 仓库后执行 pip install -e .；仅安装 skill 本身并不能执行 asset-index 命令。"
+compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI（Node.js 18+）。推荐项目级安装：npm install -g asset-index-cli 或从源码 npm link；仅安装 skill 本身并不能执行 asset-index 命令。"
 ---
 
 # Asset Index -- 基于 Frontmatter 的资产管理
 
 一句话：扫描 `.md` 文件，解析 YAML frontmatter，建立索引并验证。
+
+> **v0.3.0 起改用 Node.js 实现**（Python 版已废弃）。CLI 命令、`rules.yaml` 格式、输出协议完全兼容。
 
 本 skill 分为三个文件：
 - **SKILL.md**（本文件）—— 命令语法、输出约定、错误速查。稳定知识。
@@ -20,12 +22,16 @@ compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI。�
 安装或使用本 skill 之前，必须先在同一个 agent 运行环境中安装 `asset-index` CLI：
 
 ```bash
-python3 --version               # 需要 Python >= 3.10
+node --version                  # 需要 Node.js >= 18
 
-# 从源码克隆并安装到当前环境
+# 方式 A：npm 全局安装（推荐）
+npm install -g asset-index-cli
+
+# 方式 B：从源码安装
 git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
-pip install -e .
+npm install
+npm link
 ```
 
 ### 2. 安装本 Skill
@@ -39,7 +45,7 @@ pip install -e .
 ```bash
 git clone https://github.com/hezi-ywt/asset-index.git
 cd asset-index
-pip install -e .
+npm install && npm link
 cd ..
 cp -r asset-index/skills/asset-index your-project/.opencode/skills/
 
@@ -58,21 +64,23 @@ asset-index init                # 创建 .asset-index/rules.yaml
 
 ## 更新旧安装
 
-如果之前已经安装过 `asset-index`，当前推荐的升级方式是：更新本地源码目录，然后重新执行 `pip install -e .`。
+### npm 安装
+
+```bash
+npm update -g asset-index-cli
+```
+
+### 源码安装
 
 ```bash
 cd /path/to/asset-index
 git pull
-pip install -e .
+npm install
 ```
 
 如果本 skill 是手动复制到项目目录里的，更新源码后也请重新复制 `skills/asset-index/`。
 
-本项目当前没有独立发布版；默认按源码克隆目录进行升级。
-
 ## 检查更新
-
-先检查本地源码仓库是否落后于远端；如果已经落后，更新源码并同步 CLI 与 skill。
 
 ```bash
 cd /path/to/asset-index

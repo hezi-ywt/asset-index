@@ -6,13 +6,14 @@ Asset Index 是一个**基于 frontmatter 的原子只读技能**，用于内容
 
 它**不会**创建或编辑文件。它只读取。
 
+> **v0.3.0 起改用 Node.js 实现**（Python 版已废弃）。CLI 接口、`rules.yaml` 格式、输出协议完全兼容。
+
 ## 快速使用
 
 ```bash
-# 安装（默认推荐项目级源码安装）
-git clone https://github.com/hezi-ywt/asset-index.git
-cd asset-index
-pip install -e .
+# 安装（Node.js >= 18）
+npm install -g asset-index-cli
+# 或从源码：git clone && cd asset-index && npm install && npm link
 
 # 初始化项目
 cd your-project/
@@ -37,11 +38,13 @@ asset-index stats
 ## 代码结构
 
 ```
-src/asset_index/
-  cli.py            Click 命令组：init, scan, search, list, check, stats
-  models.py         Asset 数据类（frontmatter + body）
-  store.py          parse_frontmatter(), scan_directory(), 缓存读写
-  checker.py        load_rules(), check_asset() —— 规则驱动验证
+src/
+  cli.js            Commander 命令组：init, scan, search, list, check, stats
+  models.js         Asset 类（frontmatter + body）
+  store.js          parseFrontmatter(), scanDirectory(), 缓存读写
+  checker.js        loadRules(), checkAsset() —— 规则驱动验证
+bin/
+  asset-index.js    npm bin shebang
 ```
 
 ## 核心设计决策
@@ -49,9 +52,10 @@ src/asset_index/
 - **frontmatter 即唯一真实来源**：每个 `.md` 文件自带元数据，无需额外数据库。
 - **只读 CLI**：创建和编辑是 agent/上层 skill 的职责，工具只负责索引和检查。
 - **统一工具，项目级规则**：CLI 是统一引擎，但每个项目通过项目根目录的 `.asset-index/rules.yaml` 定义自己的资产边界、允许类型和验证要求。
-- **默认项目级安装**：因为不同项目的资产管理模式可能差异很大，推荐在项目环境内从源码安装并使用，而不是默认全局安装。
+- **默认项目级安装**：因为不同项目的资产管理模式可能差异很大，推荐在项目环境内安装并使用，而不是默认全局安装。
 - **Agent 安全输出**：stdout = 数据，stderr = `[asset-index] ...` 错误，exit 0/1。
 - **缓存加速**：`.asset-index/cache.json` 存储扫描结果，`scan` 命令负责重建。
+- **YAML CORE_SCHEMA**：用 YAML 1.2 core schema 解析 frontmatter，避免把 `2026-05-17` 这种 ISO 日期自动转 Date 对象（保持字符串形态，跟 Python 版行为一致）。
 
 ## 创建 → 检查闭环
 

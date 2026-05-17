@@ -1,29 +1,14 @@
-# Build artifacts
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json.bak
 
-# Virtual environments
-.venv
-venv/
-ENV/
+# Build artifacts
+dist/
+build/
 
 # IDEs
 .idea/
@@ -37,8 +22,12 @@ ENV/
 Thumbs.db
 
 # Test / cache
-.pytest_cache/
-.mypy_cache/
+.tmp/
+coverage/
 
-# Project-specific cache files (but keep rules.yaml)
+# Project-specific cache (but keep rules.yaml)
 .asset-index/cache.json
+
+# 本地
+.local/
+*.private.md

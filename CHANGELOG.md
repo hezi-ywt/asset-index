@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0] - 2026-05-17
+
+### 🚀 Breaking: 改用 Node.js 实现（替换 Python）
+
+- **CLI 从 Python 改写为 Node.js**——目标用户（中文 AI 创作者）100% 已装 Claude Code 等于装 Node，`pip install` 摩擦大，`npm install -g` 更顺
+- **行为完全兼容**：所有命令、参数、输出格式、`rules.yaml` 格式、`cache.json` 格式与 0.2.0 一致
+- **依赖最小化**：commander / gray-matter / js-yaml / fast-glob（4 个）
+- **Node.js >= 18** 必需
+
+### 迁移指南
+
+- **从 0.2.0 升级**：先 `pip uninstall asset-index-cli`，再 `npm install -g asset-index-cli`（或 `git pull && npm install && npm link`）
+- 现有 `.asset-index/rules.yaml` 和 `cache.json` **无需改动**
+- 现有 `.md` 资产文件**无需改动**
+
+### 修复
+
+- YAML 自动把 `YYYY-MM-DD` 解析成 Date 对象的问题：用 YAML CORE_SCHEMA（YAML 1.2 core）避免日期自动解析，保持与 Python 版行为一致
+
 ## [0.2.0] - 2026-04-14
 
 ### 新增
