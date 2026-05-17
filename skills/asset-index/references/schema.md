@@ -10,7 +10,7 @@
 | `frontmatter` | YAML 块 | 所有 frontmatter 字段的字典 |
 | `body` | Markdown 正文 | frontmatter 之后的文本内容 |
 | `title` | `title` 或 `name` | 人可读的资源名称 |
-| `asset_type` | `type` | 资产分类 |
+| `assetType` | `type` | 资产分类 |
 | `status` | `status` | 当前生命周期状态 |
 | `tags` | `tags` | 标签列表（自动从字符串或列表规范化） |
 
@@ -87,11 +87,11 @@ strict_types: false
 
 | 键 | 类型 | 说明 |
 |-----|------|------|
-| `required_fields` | `list[str]` | 所有资产都必须有的字段 |
-| `types` | `dict` | 按类型定义的要求。每个类型可设 `required: [fields]` |
-| `statuses` | `list[str]` | 允许的状态值列表 |
-| `date_fields` | `list[str]` | 必须匹配 `YYYY-MM-DD` 的字段 |
-| `strict_types` | `bool` | 为 true 时，若 `type` 不在 `types` 键中则告警 |
+| `required_fields` | `array of string` | 所有资产都必须有的字段 |
+| `types` | `object` | 按类型定义的要求。每个类型可设 `required: [fields]` |
+| `statuses` | `array of string` | 允许的状态值列表 |
+| `date_fields` | `array of string` | 必须匹配 `YYYY-MM-DD` 的字段 |
+| `strict_types` | `boolean` | 为 true 时，若 `type` 不在 `types` 键中则告警 |
 
 ## `types` 的双重语义
 
