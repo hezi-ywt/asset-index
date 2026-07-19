@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### 修复
+
+- CLI 版本号改为读取 `package.json`，避免包版本与 `asset-index --version` 漂移。
+- 测试入口改为显式匹配 `tests/*.test.js`，兼容 Windows 与新版 Node.js。
+- 更新 `js-yaml` 直接与间接依赖的锁定版本，修复重复 alias 触发的二次复杂度 DoS 风险。
+
+### 测试
+
+- 新增 CLI `--version` 与 `package.json` 一致性测试。
+
 ## [0.3.0] - 2026-05-17
 
 ### 🚀 Breaking: 改用 Node.js 实现（替换 Python）
