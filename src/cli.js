@@ -15,7 +15,9 @@ import {
 import { loadRules, isAsset, checkAsset } from './checker.js';
 import { Asset } from './models.js';
 
-const VERSION = '0.2.0';
+const { version: VERSION } = JSON.parse(
+  fs.readFileSync(new URL('../package.json', import.meta.url), 'utf-8')
+);
 
 const SAMPLE_RULES = `# Asset index validation rules for this project.
 # Customize these rules to match your project's frontmatter conventions.
