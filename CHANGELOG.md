@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### 新增
+
+- Skill 新增强制环境预检脚本，在资产命令前验证 Skill 完整性、Node.js、同源或全局 CLI、版本一致性和项目规则入口。
+- 新增预检成功与 Skill 安装不完整的自动化测试，并补充失败时必须停止的行为用例。
+
 ### 修复
 
 - CLI 版本号改为读取 `package.json`，避免包版本与 `asset-index --version` 漂移。

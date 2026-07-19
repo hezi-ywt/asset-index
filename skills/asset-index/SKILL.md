@@ -1,7 +1,6 @@
 ---
 name: asset-index
 description: "基于 frontmatter 的资产索引管理。当用户说使用资产管理、扫描带有 YAML frontmatter 的 Markdown 文件、按 type/status/tag 搜索内容创作资产、按项目规则验证资产元数据、或在创建后检查资产健康度时使用。也用于构建诸如'找出所有草稿状态的角色'、'列出第一季所有剧本'、'使用资产管理看一下这个项目里有哪些资产'之类的查询。"
-compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI（Node.js 18+）。推荐项目级安装：npm install -g asset-index-cli 或从源码 npm link；仅安装 skill 本身并不能执行 asset-index 命令。"
 ---
 
 # Asset Index -- 基于 Frontmatter 的资产管理
@@ -10,10 +9,27 @@ compatibility: "需要在 agent 运行环境中同时安装 asset-index CLI（No
 
 > **v0.3.0 起改用 Node.js 实现**（Python 版已废弃）。CLI 命令、`rules.yaml` 格式、输出协议完全兼容。
 
-本 skill 分为三个文件：
+本 skill 的核心文件：
 - **SKILL.md**（本文件）—— 命令语法、输出约定、错误速查。稳定知识。
+- **scripts/preflight.mjs** —— 在任何资产命令前验证 Skill、Node.js、CLI 和项目规则入口。
 - **references/schema.md** —— 资产 schema、项目根 `.asset-index/rules.yaml` 的格式，以及验证规则说明。
 - **references/user-notes.md** —— 用户偏好、习得模式、项目特定约定。由你在使用过程中持续维护。
+
+## 开始前强制预检
+
+执行任何 `scan`、`search`、`list`、`check` 或 `stats` 前：
+
+1. 完整读取本文件和 `references/user-notes.md`。
+2. 从目标项目根目录运行预检；如果 Skill 安装在别处，将命令中的路径替换为本次实际加载的 Skill 目录：
+
+   ```bash
+   node skills/asset-index/scripts/preflight.mjs .
+   ```
+
+3. 如果项目存在 `.asset-index/rules.yaml`，完整读取后再执行资产命令。
+4. 预检非零退出时立即停止，不得用旧缓存或另一个未验证的 CLI 继续。向用户报告缺失项和预检给出的修复动作；未经授权不要自动安装全局软件或修改项目结构。
+
+预检优先验证与当前 Skill 同一源码仓库中的 CLI，确保 CLI 与 Skill 同步；只有手动复制的 Skill 找不到同源 CLI 时才检查全局 `asset-index` 命令。后续命令使用预检输出的 CLI 入口。本 Skill 中的 `asset-index ...` 示例均指该已验证入口。
 
 ## 安装
 
