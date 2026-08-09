@@ -18,8 +18,6 @@ User can add custom triggers below:
 
 ## User Preferences
 
-- 服装卡在 Atelier 中应挂载正式 `cards/dress/<slug>/`，不要维护独立镜像；LoRA 初始挑图从 `content_ref/` 复制到 `lora_train/selection/`，用户在 Atelier 编辑 selection 后再交回 Agent 标注和训练。
-
 ## Learned Patterns
 
 - Always run `asset-index check --file <path>` immediately after creating a new asset.
